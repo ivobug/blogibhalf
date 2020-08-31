@@ -8,19 +8,19 @@
 
 <script>
 import AdminPostForm from '@/components/Admin/AdminPostForm'
-import axios from 'axios'
 
 export default {
   layout: 'admin',
+  middleware:['check-auth','auth'],
   components: {
     AdminPostForm
   },
   asyncData(context){
-    return axios
-      .get('https://ajde-f263e.firebaseio.com/posts/'+context.params.postId+'.json')
-      .then(res=>{
+    return context.app.$axios
+      .$get('/posts/'+context.params.postId+'.json')
+      .then(data=>{
         return{
-          loadedPost: {...res.data, id:context.params.postId}
+          loadedPost: {...data, id:context.params.postId}
         }
       })
       .catch(e=>context.error())
@@ -36,17 +36,7 @@ export default {
 
 
 
-//   data() {
-//     return {
-//       loadedPost: {
-//         author: 'Maximilian',
-//         title: 'My awesome Post',
-//         content: 'Super amazing, thanks for that!',
-//         thumbnailLink: 'https://static.pexels.com/photos/270348/pexels-photo-270348.jpeg'
-//       }
-//     }
-//   }
-// }
+
 </script>
 
 <style scoped>
